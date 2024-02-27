@@ -1,6 +1,10 @@
 //  material パッケージはマテリアルデザインの UI コンポーネントを使う為のパッケージで、UI を構成するファイルでは必ずと言って良いほどインポートすることになります。
 
 import "package:flutter/material.dart";
+import "dart:convert"; //json変換で使用
+import "package:http/http.dart" as http;// httpという変数を通して、httpパッケージにアクセス
+import "package:flutter_dotenv/flutter_dotenv.dart";//秘匿化したアクセストークンの取得に使用
+import 'package:zenflutterapp/models/article.dart';//作成済みのArticleクラス
 
 // StatefulWidgetクラス と Stateクラス に分かれていることがわかります。
 // StateクラスはStatefulWidgetのcreateStateメソッドで返され、この２つのクラスは必ず対になっている必要があります。
@@ -28,4 +32,12 @@ class _SearchScreenState extends State<SearchScreen>{
     );
     
   }
+}
+
+
+Future<List<Article>> searchQitta(String keyword) async {
+  // 1. http通信に必要なデータを準備をする
+  // 2. Qiita APIにリクエストを送る
+  // 3. 戻り値をArticleクラスの配列に変換
+  // 4. 変換したArticleクラスの配列を返す(returnする)
 }
