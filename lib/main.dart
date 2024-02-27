@@ -1,12 +1,23 @@
 //  material パッケージはマテリアルデザインの UI コンポーネントを使う為のパッケージで、UI を構成するファイルでは必ずと言って良いほどインポートすることになります。
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:zenflutterapp/screens/search_screen.dart';
 
 
 // ファイルを指定して実行すると呼び出されるのが main関数です。
 // runApp関数はアプリを構成する Widget 群を受け取り、描画エンジンに繋げる役割を担います。
 // この関数に渡される Widget がアプリのルート(根っこ) になります。
-void main() {
+// void main() {
+//   runApp(const MainApp());
+// }
+
+// dot_envパッケージをインポートし、読み込みのdotenv.load()メソッドを実行します。
+// この処理は非同期処理となる為、main関数をFutureに変更しましょう。
+
+// Futureは将来的に実行される処理の結果を表現するオブジェクトであり、<void>はその結果が何も返さないことを示します。
+// つまり、Future<void>は何らかの非同期処理が完了した後に、何も戻り値を返さないことを示します。
+void main() async {
+  await dotenv.load(fileName:".env");
   runApp(const MainApp());
 }
 
