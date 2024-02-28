@@ -37,7 +37,35 @@ class _SearchScreenState extends State<SearchScreen>{
 
 Future<List<Article>> searchQitta(String keyword) async {
   // 1. http通信に必要なデータを準備をする
+  // Uri.httpsでは下記の通り、第一引数に baseUrl、第二引数にURL
+  // パス、Map<String,dynamic>型でクエリパラメータを指定します。
+  final uri = Uri.https("qitta.com","/api/v2/items", {
+    "query":"title:$keyword",
+    "par_page":"10",
+  });
+
+  // API通信のリクエストヘッダーに含めるアクセストークンをdotenvから取得します。
+  final String token = dotenv.env['QIITA_ACCESS_TOKEN'] ?? '';
+
   // 2. Qiita APIにリクエストを送る
+  // awaitで非同期処理を待ち、http.Response型のresに結果を格納します。
+  final http.Response res = await http.get(uri, headers:{
+    "Authorization":"Bearer $token",
+  });
+
   // 3. 戻り値をArticleクラスの配列に変換
+  // ステータスに応じた処理
+  if(res.statusCode == 200){
+    // モデルクラスへ変換
+    // レスポンスは複数の投稿データの配列なので、一度jsonDecode()を使ってList<dynamic>型に変換します。
+    // その後、map()でList<dynamic>型の配列の中身を１つ１つ factory コンストラクタを使ってArticleオブジェクトに変換し、
+    // toList()で再度配列に格納し直し返します。
+    final List<dynamic> body = jsonDecode(res.body);
+    return body.map((dynamic json)=> Article.fromJson(json)).toList();
+  }else {
+    return [];
+  }
+
   // 4. 変換したArticleクラスの配列を返す(returnする)
+  
 }
